@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.notes.fragments.list.ListFragment"
-        android:label="fragment_list"
-        tools:layout="@layout/fragment_list" >
+        android:label="Notes"
+        tools:layout="@layout/fragment_list">
         <action
             android:id="@+id/action_listFragment_to_editFragment"
             app:destination="@id/editFragment" />
@@ -20,8 +20,8 @@
     <fragment
         android:id="@+id/addFragment"
         android:name="com.example.notes.fragments.add.AddFragment"
-        android:label="fragment_add"
-        tools:layout="@layout/fragment_add" >
+        android:label="Add a Note"
+        tools:layout="@layout/fragment_add">
         <action
             android:id="@+id/action_addFragment_to_listFragment"
             app:destination="@id/listFragment" />
@@ -29,8 +29,8 @@
     <fragment
         android:id="@+id/editFragment"
         android:name="com.example.notes.fragments.edit.EditFragment"
-        android:label="fragment_edit"
-        tools:layout="@layout/fragment_edit" >
+        android:label="Edit a Note"
+        tools:layout="@layout/fragment_edit">
         <action
             android:id="@+id/action_editFragment_to_listFragment"
             app:destination="@id/listFragment" />

@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_no_data.xml" value="0.20729166666666668" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16304347826086957" />
+        <entry key="app/src/main/res/layout/fragment_add.xml" value="0.45" />
         <entry key="app/src/main/res/layout/fragment_list.xml" value="0.335" />
       </map>
     </option>
