@@ -1,10 +1,8 @@
 package com.example.notes.fragments.list
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.notes.R
 import com.example.notes.databinding.FragmentListBinding
@@ -28,8 +26,14 @@ class ListFragment : Fragment() {
             findNavController().navigate(R.id.action_listFragment_to_editFragment)
         }
 
+        //set the setHasOptionsMenu method to true to display menu
+        setHasOptionsMenu(true)
 
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        //inflate the menu xml layout to render in the app
+        inflater.inflate(R.menu.fragment_list_menu, menu)
+    }
 }
