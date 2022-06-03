@@ -1,4 +1,4 @@
-package com.example.notes.data
+package com.example.notes.data.models
 
 enum class Priority
 {

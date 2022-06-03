@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.notes.data.models.NotesData
 
 @Dao
 interface NotesDao {
@@ -13,5 +14,5 @@ interface NotesDao {
     fun getAllData(): LiveData<List<NotesData>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertData()
+    suspend fun insertData(notesData: NotesData)
 }
