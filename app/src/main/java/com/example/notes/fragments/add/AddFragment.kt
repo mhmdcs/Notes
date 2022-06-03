@@ -2,8 +2,10 @@ package com.example.notes.fragments.add
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,7 +14,6 @@ import com.example.notes.data.models.NotesData
 import com.example.notes.data.models.Priority
 import com.example.notes.data.viewmodel.NotesViewModel
 import com.example.notes.databinding.FragmentAddBinding
-import com.example.notes.databinding.FragmentListBinding
 
 
 class AddFragment : Fragment() {
@@ -24,14 +25,14 @@ class AddFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
-        binding = FragmentAddBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add, container, false)
 
         setHasOptionsMenu(true)
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add, container, false)
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -47,11 +48,12 @@ class AddFragment : Fragment() {
 
     private fun insertDataToDb() {
 
-        val mTitle = binding.addNotesTitleEditText.toString()
-        val mPriority = binding.addSpinner.toString()
-        val mContent = binding.addNotesContentEditText.toString()
+        val mTitle = binding.addNotesTitleEditText.text.toString()
+        val mPriority = binding.addSpinner.selectedItem.toString()
+        val mContent = binding.addNotesContentEditText.text.toString()
 
         val validate = verifyDataIsNotEmpty(mTitle, mContent)
+        Log.i("AddFragment", "Validate value is $validate")
         if(validate){
             val newData = NotesData(
                 0,
@@ -64,21 +66,18 @@ class AddFragment : Fragment() {
             //navigate back
             findNavController().navigate(R.id.action_addFragment_to_listFragment)
         } else Toast.makeText(context, "Please fill out all fields", Toast.LENGTH_SHORT).show()
-
     }
 
     private fun verifyDataIsNotEmpty(title: String, content: String): Boolean{
-       return if(TextUtils.isEmpty(title) || TextUtils.isEmpty(content)){
-             false //if title and content are empty, return false
-        } else !(title.isEmpty() || content.isEmpty()) //else if title and content are NOT empty, return true
+       return !(title.isEmpty() || content.isEmpty())  //if title and content are NOT empty, return true
     }
 
     private fun parsePriority(priority: String): Priority{
         return when(priority){
-            "Priority High" -> Priority.HIGH
-            "Priority Medium" -> Priority.MEDIUM
-            "Priority Low" -> Priority.LOW
-            else -> Priority.LOW
+            "High Priority" -> {Priority.HIGH}
+            "Medium Priority" -> {Priority.MEDIUM}
+            "Low Priority" -> {Priority.LOW}
+            else -> Priority.HIGH
         }
     }
 
