@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notes.R
 import com.example.notes.data.models.NotesData
@@ -22,6 +23,9 @@ class ListAdapter: RecyclerView.Adapter<CustomViewHolder>() {
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val notesData = dataList[position]
+        holder.itemView.setOnClickListener {
+            it.findNavController().navigate(ListFragmentDirections.actionListFragmentToEditFragment(notesData))
+        }
         holder.bind(notesData)
     }
 
