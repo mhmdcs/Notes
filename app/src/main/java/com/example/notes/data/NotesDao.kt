@@ -15,4 +15,11 @@ interface NotesDao {
 
     @Update
     suspend fun updateData(notesData: NotesData)
+
+    //or you could use the predefined @Delete query to delete a single item, and just pass a NotesData object instead of in id.
+    @Query("DELETE FROM notes_table WHERE id = :dataId")
+    suspend fun deleteData(dataId: Int)
+
+    @Query("DELETE FROM notes_table")
+    suspend fun deleteAllData()
 }

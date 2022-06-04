@@ -1,5 +1,6 @@
 package com.example.notes.fragments.edit
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -29,9 +30,8 @@ class EditFragment : Fragment() {
 
         binding = FragmentEditBinding.inflate(inflater, container, false)
 
-        binding.editNotesTitleEditText.setText(args.currentNote.title)
-        binding.editNotesContentEditText.setText(args.currentNote.content)
-        binding.editSpinner.setSelection(sharedViewModel.parsePriorityToInt(args.currentNote.priority))
+        binding.args = args
+
         binding.editSpinner.onItemSelectedListener = sharedViewModel.listener
 
         setHasOptionsMenu(true)
@@ -46,8 +46,28 @@ class EditFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.save_menu){
             updateData()
+        } else if (item.itemId == R.id.delete_menu){
+            confirmOptionAndDelete()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun deleteData() {
+        notesViewModel.deleteData(args.currentNote.id)
+        Toast.makeText(context, "Note Deleted", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(EditFragmentDirections.actionEditFragmentToListFragment())
+    }
+
+    private fun confirmOptionAndDelete(){
+        val builder = AlertDialog.Builder(context)
+
+        builder.setPositiveButton("Yes") { _, _ ->
+            deleteData()
+        }
+        builder.setNegativeButton("No") { _, _ -> }
+        builder.setTitle("Delete '${args.currentNote.title}?'")
+        builder.setMessage("Are you sure you want to remove '${args.currentNote.title}'?")
+        builder.create().show()
     }
 
     private fun updateData() {
@@ -65,7 +85,7 @@ class EditFragment : Fragment() {
             mContent
         )
         notesViewModel.updateData(updatedNote)
-        Toast.makeText(context, "Changed saved!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Changes saved!", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_editFragment_to_listFragment)
         } else {
             Toast.makeText(context, "Please fill out all fields", Toast.LENGTH_SHORT).show()

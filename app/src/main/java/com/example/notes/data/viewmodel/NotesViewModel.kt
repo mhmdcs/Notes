@@ -36,4 +36,16 @@ class NotesViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+    fun deleteData(dataId: Int){
+        viewModelScope.launch(Dispatchers.IO){
+            repository.deleteData(dataId)
+        }
+    }
+
+    fun deleteAllData(){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllData()
+        }
+    }
+
 }

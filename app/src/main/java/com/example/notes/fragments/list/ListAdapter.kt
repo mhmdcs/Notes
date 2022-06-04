@@ -16,16 +16,11 @@ class ListAdapter: RecyclerView.Adapter<CustomViewHolder>() {
     private var dataList = emptyList<NotesData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemLayoutBinding.inflate(layoutInflater, parent, false)
-        return CustomViewHolder(binding)
+        return CustomViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val notesData = dataList[position]
-        holder.itemView.setOnClickListener {
-            it.findNavController().navigate(ListFragmentDirections.actionListFragmentToEditFragment(notesData))
-        }
         holder.bind(notesData)
     }
 
@@ -43,16 +38,16 @@ class ListAdapter: RecyclerView.Adapter<CustomViewHolder>() {
 class CustomViewHolder(private val binding: ItemLayoutBinding): RecyclerView.ViewHolder(binding.root) {
 
     fun bind(notesData: NotesData){
-        binding.titleTxt.text = notesData.title
-        binding.contentTxt.text = notesData.content
-
-        val priority = notesData.priority
-        when(priority){
-            Priority.HIGH -> binding.priorityIndicator.setCardBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.red))
-            Priority.MEDIUM -> binding.priorityIndicator.setCardBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.yellow))
-            Priority.LOW -> binding.priorityIndicator.setCardBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.green))
-
-        }
-
+        binding.notesData = notesData
+        binding.executePendingBindings()
     }
+
+    companion object {
+        fun from(parent: ViewGroup): CustomViewHolder{
+            val layoutInflater = LayoutInflater.from(parent.context)
+            val binding = ItemLayoutBinding.inflate(layoutInflater, parent, false)
+            return CustomViewHolder(binding)
+        }
+    }
+
 }

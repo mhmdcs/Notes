@@ -1,62 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="24dp"
-    tools:context=".fragments.edit.EditFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--when layout_width or layout_height is 0dp it means match_constraint -->
+    <data>
+    <variable
+        name="args"
+        type="com.example.notes.fragments.edit.EditFragmentArgs" />
+    </data>
 
-    <EditText
-        android:id="@+id/edit_notes_title_editText"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:ems="10"
-        android:background="@drawable/borders"
-        android:inputType="textPersonName"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-        android:hint="@string/title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp"
+        tools:context=".fragments.edit.EditFragment">
 
-    <Spinner
-        android:id="@+id/edit_spinner"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="8dp"
-        android:paddingStart="16dp"
-        android:background="@drawable/borders"
-        android:paddingEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:entries="@array/priority"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_notes_title_editText" />
+        <!--when layout_width or layout_height is 0dp it means match_constraint -->
 
-    <EditText
-        android:id="@+id/edit_notes_content_editText"
-        android:layout_width="0dp"
-        android:hint="@string/content"
-        android:background="@drawable/borders"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-        android:paddingTop="16dp"
-        android:inputType="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_spinner"
+        <EditText
+            android:id="@+id/edit_notes_title_editText"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:ems="10"
+            android:background="@drawable/borders"
+            android:inputType="textPersonName"
+            android:text="@{args.currentNote.title}"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:hint="@string/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        />
+        <Spinner
+            android:id="@+id/edit_spinner"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:paddingStart="16dp"
+            android:background="@drawable/borders"
+            android:parsePriorityToInt="@{args.currentNote.priority}"
+            android:paddingEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:entries="@array/priority"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_notes_title_editText" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/edit_notes_content_editText"
+            android:layout_width="0dp"
+            android:hint="@string/content"
+            android:background="@drawable/borders"
+            android:text="@{args.currentNote.content}"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="16dp"
+            android:inputType="textMultiLine"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_spinner"
+
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
