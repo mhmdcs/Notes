@@ -14,13 +14,15 @@ import com.example.notes.data.models.NotesData
 import com.example.notes.data.models.Priority
 import com.example.notes.data.viewmodel.NotesViewModel
 import com.example.notes.databinding.FragmentAddBinding
+import com.example.notes.fragments.SharedViewModel
 
 
 class AddFragment : Fragment() {
 
     private lateinit var binding: FragmentAddBinding
 
-    private val viewModel: NotesViewModel by viewModels()
+    private val notesViewModel: NotesViewModel by viewModels()
+    private val sharedViewModel: SharedViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +30,8 @@ class AddFragment : Fragment() {
     ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add, container, false)
+
+        binding.addSpinner.onItemSelectedListener = sharedViewModel.listener
 
         setHasOptionsMenu(true)
 
@@ -52,33 +56,22 @@ class AddFragment : Fragment() {
         val mPriority = binding.addSpinner.selectedItem.toString()
         val mContent = binding.addNotesContentEditText.text.toString()
 
-        val validate = verifyDataIsNotEmpty(mTitle, mContent)
+        val validate = sharedViewModel.verifyDataIsNotEmpty(mTitle, mContent)
         Log.i("AddFragment", "Validate value is $validate")
         if(validate){
             val newData = NotesData(
                 0,
                 mTitle,
-                parsePriority(mPriority),
+                sharedViewModel.parsePriority(mPriority),
                 mContent
             )
-            viewModel.insertData(newData)
+            notesViewModel.insertData(newData)
             Toast.makeText(context, "Note added", Toast.LENGTH_SHORT).show()
             //navigate back
             findNavController().navigate(R.id.action_addFragment_to_listFragment)
         } else Toast.makeText(context, "Please fill out all fields", Toast.LENGTH_SHORT).show()
     }
 
-    private fun verifyDataIsNotEmpty(title: String, content: String): Boolean{
-       return !(title.isEmpty() || content.isEmpty())  //if title and content are NOT empty, return true
-    }
 
-    private fun parsePriority(priority: String): Priority{
-        return when(priority){
-            "High Priority" -> {Priority.HIGH}
-            "Medium Priority" -> {Priority.MEDIUM}
-            "Low Priority" -> {Priority.LOW}
-            else -> Priority.HIGH
-        }
-    }
 
 }
