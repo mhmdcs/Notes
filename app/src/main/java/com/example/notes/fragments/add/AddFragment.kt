@@ -62,7 +62,7 @@ class AddFragment : Fragment() {
             val newData = NotesData(
                 0,
                 mTitle,
-                sharedViewModel.parsePriority(mPriority),
+                sharedViewModel.parseStringToPriority(mPriority),
                 mContent
             )
             notesViewModel.insertData(newData)
