@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -17,8 +18,11 @@ import com.example.notes.databinding.FragmentListBinding
 import com.example.notes.fragments.SharedViewModel
 import com.example.notes.fragments.list.adapter.ListAdapter
 import com.google.android.material.snackbar.Snackbar
+import jp.wasabeef.recyclerview.animators.LandingAnimator
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
-class ListFragment : Fragment() {
+                                //make sure to  import the androidx.appcompat version of SearchView else it won'r work
+class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private lateinit var binding: FragmentListBinding
 
@@ -40,6 +44,8 @@ class ListFragment : Fragment() {
 
         val recyclerView = binding.myRecyclerView
         swipeToDelete(recyclerView)
+
+        recyclerView.itemAnimator = SlideInUpAnimator()
 
         binding.lifecycleOwner = this
         binding.sharedViewModel = sharedViewModel
@@ -116,6 +122,11 @@ class ListFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         //inflate the menu xml layout to render in the app
         inflater.inflate(R.menu.fragment_list_menu, menu)
+
+        val searchMenuItem = menu.findItem(R.id.search_menu)
+        val searchView = searchMenuItem.actionView as? SearchView
+        searchView?.isSubmitButtonEnabled = true
+        searchView?.setOnQueryTextListener(this) //we set it as `this` because we have implemented the SearchView.OnQueryTextListener interface inside our class
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -140,4 +151,30 @@ class ListFragment : Fragment() {
         notesViewModel.deleteAllData()
         Toast.makeText(context, "All Notes Cleared!", Toast.LENGTH_SHORT).show()
     }
-}
+
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        if(query != null){
+            searchThroughDatabase(query)
+        }
+        return true
+    }
+
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        if(query != null){
+            searchThroughDatabase(query)
+        }
+        return true
+    }
+
+
+    private fun searchThroughDatabase(query: String) {
+        val searchQuery = "%$query%"
+        notesViewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner, Observer{
+            listAdapter.setData(it)
+        })
+    }
+
+
+                                }

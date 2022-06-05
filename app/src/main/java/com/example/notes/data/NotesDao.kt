@@ -8,7 +8,7 @@ import com.example.notes.data.models.NotesData
 interface NotesDao {
 
     @Query("SELECT * FROM notes_table ORDER BY id ASC")
-    fun getAllData(): LiveData<List<NotesData>>
+    fun getAllData(): LiveData<List<NotesData>> //Room executes queries that return LiveData on a background thread automatically. Room Database ensure that the query returning observable is run on background thread, which is why later won't need to suspend such functions or need to call it from a coroutine
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertData(notesData: NotesData)
@@ -22,4 +22,8 @@ interface NotesDao {
 
     @Query("DELETE FROM notes_table")
     suspend fun deleteAllData()
+
+    @Query("SELECT * FROM notes_table WHERE title LIKE :query")
+     fun searchDatabase(query: String): LiveData<List<NotesData>> //Room executes queries that return LiveData on a background thread automatically. Room Database ensure that the query returning observable is run on background thread, which is why later won't need to suspend such functions or need to call it from a coroutine
+
 }
