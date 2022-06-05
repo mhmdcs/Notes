@@ -1,19 +1,14 @@
-package com.example.notes.fragments.list
+package com.example.notes.fragments.list.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.notes.R
 import com.example.notes.data.models.NotesData
-import com.example.notes.data.models.Priority
 import com.example.notes.databinding.ItemLayoutBinding
 
 class ListAdapter: RecyclerView.Adapter<CustomViewHolder>() {
 
-    private var dataList = emptyList<NotesData>()
+     var dataList = emptyList<NotesData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         return CustomViewHolder.from(parent)
@@ -43,7 +38,7 @@ class CustomViewHolder(private val binding: ItemLayoutBinding): RecyclerView.Vie
     }
 
     companion object {
-        fun from(parent: ViewGroup): CustomViewHolder{
+        fun from(parent: ViewGroup): CustomViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val binding = ItemLayoutBinding.inflate(layoutInflater, parent, false)
             return CustomViewHolder(binding)
