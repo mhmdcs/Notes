@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notes.R
 import com.example.notes.data.models.NotesData
 import com.example.notes.data.viewmodel.NotesViewModel
@@ -40,7 +41,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         binding = FragmentListBinding.inflate(inflater, container, false)
 
         binding.myRecyclerView.adapter = listAdapter
-        binding.myRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.myRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
         val recyclerView = binding.myRecyclerView
         swipeToDelete(recyclerView)
