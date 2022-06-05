@@ -14,7 +14,7 @@ import com.example.notes.data.models.Priority
 
 class SharedViewModel(application: Application): AndroidViewModel(application) {
 
-    val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(true) //set it to true by default
+    val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(false)
 
     fun checkIfDatabaseEmpty(dataList: List<NotesData>){
         emptyDatabase.value = dataList.isEmpty() //isEmpty() will return true when the list is empty, and false when it isn't

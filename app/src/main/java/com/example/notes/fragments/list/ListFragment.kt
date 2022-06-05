@@ -44,6 +44,8 @@ class ListFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.sharedViewModel = sharedViewModel
 
+
+
         notesViewModel.getAllData.observe(viewLifecycleOwner, Observer { notesData ->
             sharedViewModel.checkIfDatabaseEmpty(notesData)
             listAdapter.setData(notesData)
