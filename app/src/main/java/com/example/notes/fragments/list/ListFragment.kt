@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notes.R
+import com.example.notes.data.models.NotesData
 import com.example.notes.data.viewmodel.NotesViewModel
 import com.example.notes.databinding.FragmentListBinding
 import com.example.notes.fragments.SharedViewModel
 import com.example.notes.fragments.list.adapter.ListAdapter
+import com.google.android.material.snackbar.Snackbar
 
 class ListFragment : Fragment() {
 
@@ -72,9 +74,13 @@ class ListFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val itemToDelete = listAdapter.dataList[viewHolder.adapterPosition]
-                notesViewModel.deleteData(itemToDelete.id)
-                Toast.makeText(context, "Removed '${itemToDelete.title}'", Toast.LENGTH_SHORT).show()
+                //delete item
+                val itemDeleted = listAdapter.dataList[viewHolder.adapterPosition]
+                notesViewModel.deleteData(itemDeleted.id)
+                listAdapter.notifyItemRemoved(viewHolder.adapterPosition)
+
+                //restore deleted item
+                restoreDeletedItem(viewHolder.itemView, itemDeleted, viewHolder.adapterPosition)
             }
 
         }
@@ -82,6 +88,16 @@ class ListFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
+    }
+
+    private fun restoreDeletedItem(view: View, itemDeleted: NotesData, position: Int) {
+
+        val snackbar = Snackbar.make(view, "Removed '${itemDeleted.title}'", Snackbar.LENGTH_LONG )
+        snackbar.setAction("Undo"){
+            notesViewModel.insertData(itemDeleted)
+            listAdapter.notifyItemChanged(position)
+        }
+        snackbar.show()
     }
 
     //we now observe if the database is empty in the layout via BindingAdapters
