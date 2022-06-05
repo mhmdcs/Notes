@@ -130,9 +130,22 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.clearAll_menu){
-            confirmOptionAndDeleteAllData()
-        }
+        when(item.itemId){
+
+                R.id.clearAll_menu -> confirmOptionAndDeleteAllData()
+
+                R.id.highest_sort -> notesViewModel.sortByHighestPriority.observe(this, Observer{
+                    listAdapter.setData(it)
+                })
+
+                R.id.lowest_sort -> notesViewModel.sortByLowestPriority.observe(this, Observer{
+                listAdapter.setData(it)
+                })
+
+                R.id.oldest_sort -> notesViewModel.getAllData.observe(this, Observer{
+                    listAdapter.setData(it)
+                })
+                     }
         return super.onOptionsItemSelected(item)
     }
 

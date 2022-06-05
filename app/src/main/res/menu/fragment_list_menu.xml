@@ -6,7 +6,7 @@
         android:id="@+id/search_menu"
         android:title="@string/search"
         android:icon="@drawable/ic_search"
-        android:iconTint="@color/red"
+        android:iconTint="@color/white"
         app:showAsAction="ifRoom"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         />
@@ -16,11 +16,13 @@
         android:title="@string/sort_by">
 
         <menu>
-            <item android:id="@+id/priority_high"
-                android:title="@string/priority_high"/>
+            <item android:id="@+id/highest_sort"
+                android:title="@string/highest_sort"/>
 
-            <item android:id="@+id/priority_low"
-                android:title="@string/priority_low"/>
+            <item android:id="@+id/lowest_sort"
+                android:title="@string/lowest_sort"/>
+            <item android:id="@+id/oldest_sort"
+                android:title="@string/oldest"/>
         </menu>
 
     </item>
