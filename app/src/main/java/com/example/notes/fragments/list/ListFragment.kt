@@ -8,24 +8,21 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.*
 import com.example.notes.R
 import com.example.notes.data.models.NotesData
 import com.example.notes.data.viewmodel.NotesViewModel
 import com.example.notes.databinding.FragmentListBinding
 import com.example.notes.fragments.SharedViewModel
 import com.example.notes.fragments.list.adapter.ListAdapter
+import com.example.notes.utiils.observeOnce
 import com.google.android.material.snackbar.Snackbar
-import jp.wasabeef.recyclerview.animators.LandingAnimator
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
                                 //make sure to  import the androidx.appcompat version of SearchView else it won'r work
 class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
-    private lateinit var binding: FragmentListBinding
+    private var _binding: FragmentListBinding? = null
+    private val binding get() = _binding!!
 
     private val listAdapter: ListAdapter by lazy { ListAdapter() }
 
@@ -33,32 +30,32 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private val sharedViewModel: SharedViewModel by viewModels()
 
+    private lateinit var recyclerView: RecyclerView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentListBinding.inflate(inflater, container, false)
+        _binding = FragmentListBinding.inflate(inflater, container, false)
 
         binding.myRecyclerView.adapter = listAdapter
         binding.myRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
-        val recyclerView = binding.myRecyclerView
+        recyclerView = binding.myRecyclerView
         swipeToDelete(recyclerView)
-
-        recyclerView.itemAnimator = SlideInUpAnimator()
 
         binding.lifecycleOwner = this
         binding.sharedViewModel = sharedViewModel
 
 
-
         notesViewModel.getAllData.observe(viewLifecycleOwner, Observer { notesData ->
             sharedViewModel.checkIfDatabaseEmpty(notesData)
             listAdapter.setData(notesData)
+            binding.myRecyclerView.scheduleLayoutAnimation()
         })
 
-        //we now observe if the database is empty in the layout via BindingAdapters
+        //we now observe if the database is empty in the layout via BindingAdapters, so this is commented out.
 //        sharedViewModel.emptyDatabase.observe(viewLifecycleOwner, Observer {
 //            displayNoDataImageViewAndTextView(it)
 //        })
@@ -86,6 +83,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
                 //delete item
                 val itemDeleted = listAdapter.dataList[viewHolder.adapterPosition]
                 notesViewModel.deleteData(itemDeleted.id)
+
                 listAdapter.notifyItemRemoved(viewHolder.adapterPosition)
 
                 //restore deleted item
@@ -104,7 +102,9 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         val snackbar = Snackbar.make(view, "Removed '${itemDeleted.title}'", Snackbar.LENGTH_LONG )
         snackbar.setAction("Undo"){
             notesViewModel.insertData(itemDeleted)
-            listAdapter.notifyItemChanged(position)
+            if (position != -1 ){
+                listAdapter.notifyItemChanged(position)
+            }
         }
         snackbar.show()
     }
@@ -185,10 +185,15 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun searchThroughDatabase(query: String) {
         val searchQuery = "%$query%"
-        notesViewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner, Observer{
+        notesViewModel.searchDatabase(searchQuery).observeOnce(viewLifecycleOwner, Observer{
             listAdapter.setData(it)
         })
     }
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
 
-                                }
+
+}

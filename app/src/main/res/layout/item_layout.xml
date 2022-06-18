@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -8,12 +10,10 @@
             type="com.example.notes.data.models.NotesData" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_margin="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/notes_item"
@@ -42,21 +42,24 @@
             tools:cardBackgroundColor="@color/red" />
 
 
+        <!--layout_width = 0dp means match_constraints-->
         <TextView
             android:id="@+id/title_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{notesData.title}"
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
-            tools:text="Placeholder Title"
-            android:textSize="20sp"
             android:maxLength="20"
+            android:text="@{notesData.title}"
+            android:textSize="20sp"
             android:textStyle="bold"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@+id/priority_indicator"
+            app:layout_constraintHorizontal_bias="0.036"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Placeholder Title" />
 
-<!--layout_width = 0dp means match_constraints-->
         <TextView
             android:id="@+id/content_txt"
             android:layout_width="0dp"

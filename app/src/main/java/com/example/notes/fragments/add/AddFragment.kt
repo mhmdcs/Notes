@@ -19,7 +19,8 @@ import com.example.notes.fragments.SharedViewModel
 
 class AddFragment : Fragment() {
 
-    private lateinit var binding: FragmentAddBinding
+    private var _binding: FragmentAddBinding? = null
+    private val binding get() = _binding!!
 
     private val notesViewModel: NotesViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by viewModels()
@@ -29,7 +30,7 @@ class AddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add, container, false)
 
         binding.addSpinner.onItemSelectedListener = sharedViewModel.listener
 
@@ -73,5 +74,8 @@ class AddFragment : Fragment() {
     }
 
 
-
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
 }

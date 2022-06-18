@@ -18,7 +18,9 @@ import com.example.notes.fragments.SharedViewModel
 
 class EditFragment : Fragment() {
 
-    private lateinit var binding: FragmentEditBinding
+    private var _binding : FragmentEditBinding? = null
+    private val binding get() = _binding!!
+
     private val args by navArgs<EditFragmentArgs>()
     private val sharedViewModel: SharedViewModel by viewModels()
     private val notesViewModel: NotesViewModel by viewModels()
@@ -28,7 +30,7 @@ class EditFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        binding = FragmentEditBinding.inflate(inflater, container, false)
+        _binding = FragmentEditBinding.inflate(inflater, container, false)
 
         binding.args = args
 
@@ -90,5 +92,10 @@ class EditFragment : Fragment() {
         } else {
             Toast.makeText(context, "Please fill out all fields", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

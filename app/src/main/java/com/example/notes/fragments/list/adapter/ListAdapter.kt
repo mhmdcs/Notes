@@ -39,6 +39,7 @@ class CustomViewHolder(private val binding: ItemLayoutBinding): RecyclerView.Vie
 
     fun bind(notesData: NotesData){
         binding.notesData = notesData
+
         binding.executePendingBindings()
     }
 

@@ -23,6 +23,7 @@
             android:id="@+id/myRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layoutAnimation="@anim/recyclerview_anim"
             tools:listitem="@layout/item_layout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
